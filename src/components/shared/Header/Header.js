@@ -1,4 +1,5 @@
 import React from 'react';
+import Menu from '../Menu/Menu';
 
 
 // Functional Component with Anonymous fn
@@ -14,17 +15,7 @@ const Header = function () {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarsExampleDefault">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
-              <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">About</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Contact</a>
-            </li>
-          </ul>
+          <Menu></Menu>
         </div>
       </nav>
     </header>
