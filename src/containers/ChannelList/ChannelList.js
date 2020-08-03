@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Channel from './Channel/Channel';
+import Channel from '../../components/Home/Channel/Channel';
 
 class ChannelList extends Component{
 
@@ -10,18 +10,22 @@ class ChannelList extends Component{
      --- after react hooks introduced states are available to fn components 
   */
 
-  state = {
-    tvChannelList: [
-      { name: 'Star Sports', info: '#1 Sports Channel', logo: 'star.png'},
-      { name: 'HBO', info: 'Entertainment Channel', logo: 'hbo.png'},
-      { name: 'NatGeo', info: 'Infotainment Channel', logo: 'natgeo.png'}
-    ],
-    number: 10
+  constructor(props){
+    super(props); // to receive anything from parent comp you can work with props
+    console.log(this);
+    this.state = {
+      tvChannelList: [
+        { name: 'Star Sports', info: '#1 Sports Channel', logo: 'star.png'},
+        { name: 'HBO', info: 'Entertainment Channel', logo: 'hbo.png'},
+        { name: 'NatGeo', info: 'Infotainment Channel', logo: 'natgeo.png'}
+      ],
+      number: 10
+    }  
   }
 
 
   // public method -- event handler
-  increaseCount = () => {
+  increaseCountHandler = () => {
     // console.log(this);  // context of this -- around ChannelList class
     // changing state -- should use setState method
     // setState will result in re-rendering
@@ -57,7 +61,7 @@ class ChannelList extends Component{
 
         <p>{this.state.number}</p>
         <button className='btn btn-danger' 
-        onClick={this.increaseCount}>Increase Count</button>
+        onClick={this.increaseCountHandler}>Increase Count</button>
       </div>
 
     )

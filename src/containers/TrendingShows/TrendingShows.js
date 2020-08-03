@@ -11,6 +11,20 @@ class TrendingShows extends Component {
     ]
   };
 
+
+  addToWatchlistHandler = () => {
+    // Todo: Make add to watchlist functionality 
+    console.log(this);
+    this.setState( {
+      showsList: [
+        { id: 1, name: 'The Planet Earth', host: 'David Attenborough', isInWatchList: true},
+        { id: 2, name: 'Cricket World Cup 2020', host: 'Ganguly', isInWatchList: false},
+        { id: 3, name: 'Man Vs Wild', host: 'Bear Grylls', isInWatchList: false},
+        { id: 4, name: 'The Planet Earth IV', host: 'David Attenborough', isInWatchList: false}
+      ]
+    });
+  }
+
   render() {
 
     /* loop thru here */
@@ -24,7 +38,9 @@ class TrendingShows extends Component {
             #{show.id} {show.name} 
             - hosted by {show.host}
             <button type="button" 
-              className="btn btn-primary btn-sm float-right">Add to Watchlist</button>
+              className="btn btn-primary btn-sm float-right" onClick={this.addToWatchlistHandler}>
+                { show.isInWatchList? 'In Watchlist' : 'Add to Watchlist' }
+            </button>
           </li>
         )
       })
