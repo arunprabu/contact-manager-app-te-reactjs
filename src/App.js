@@ -8,6 +8,7 @@ import About from './components/About/About';
 import Contacts from './components/Contacts/Contacts';
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import ContactDetails from './containers/Contacts/ContactDetails';
 
 // ideal place for you to do layout 
 
@@ -23,7 +24,8 @@ function App() {
         <Switch>
           <Route exact path='/' component={Home}></Route>
           <Route path='/about' component={About}></Route>
-          <Route path='/contacts' component={Contacts}></Route>
+          <Route exact path='/contacts' component={Contacts}></Route>
+          <Route path='/contacts/1' component={ContactDetails}></Route>
         </Switch>
 
         </div>
