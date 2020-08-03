@@ -1,9 +1,20 @@
 import React from 'react'
+import ContactList from '../../containers/ContactList/ContactList'
 
 function Contacts() {
   return (
     <div>
-      <h1>Contacts Manager App</h1>
+      <div className='container'>
+        <h1>Contacts</h1>
+        <div className='row'>
+          <div className='col-md-4'>
+            <ContactForm></ContactForm>
+          </div>
+          <div className='col-md-8'>
+            <ContactList></ContactList>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

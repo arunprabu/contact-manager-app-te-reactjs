@@ -4,6 +4,10 @@ import './App.css';
 import Header from './components/shared/Header/Header';
 import Footer from './components/shared/Footer/Footer';
 import Home from './components/Home/Home';
+import About from './components/About/About';
+import Contacts from './components/Contacts/Contacts';
+
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 // ideal place for you to do layout 
 
@@ -11,15 +15,21 @@ import Home from './components/Home/Home';
 function App() { 
   // should return template
   return (
-    <div>
-      <Header />
-      <div className='topMargin'>
+    <Router>
+      <div>
+        <Header />
+        <div className='topMargin'>
+        
+        <Switch>
+          <Route exact path='/' component={Home}></Route>
+          <Route path='/about' component={About}></Route>
+          <Route path='/contacts' component={Contacts}></Route>
+        </Switch>
 
-        <Home></Home>
-       
+        </div>
+        <Footer year='2020' />
       </div>
-      <Footer year='2020' />
-    </div>
+    </Router>
   );
 }
 
