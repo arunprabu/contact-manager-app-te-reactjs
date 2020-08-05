@@ -31,7 +31,7 @@ import thunk from 'redux-thunk';  //npm i redux-thunk
 import { applyMiddleware } from 'redux';
 
 // Step 2: Exec createStore() method and save it in a variable 
-const store = createStore(rootReducers, applyMiddleware( thunk, logger ));  //this needs a special argument called 'reducer'
+const store = createStore(rootReducers, applyMiddleware( thunk,  logger));  //this needs a special argument called 'reducer'
 
 // Step 3: Refer reducers/contactReducer.js 
 

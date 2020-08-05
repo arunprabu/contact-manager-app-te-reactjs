@@ -16,16 +16,16 @@ export const createContact = (data) => {
     return axios.post(CONTACTS_API_URL, data )
       .then(response => {
         console.log(response);
-          console.log('Submission SUCCESS');
-          dispatch({
-            type: ADD_CONTACT,
-            payload: {
-              id: response.data.id,
-              name: response.data.name,
-              email: response.data.email,
-              phone: response.data.phone
-            }
-          });
+        console.log('Submission SUCCESS');
+        dispatch({
+          type: ADD_CONTACT,
+          payload: {
+            id: response.data.id,
+            name: response.data.name,
+            email: response.data.email,
+            phone: response.data.phone
+          }
+        });
       })
       .catch(error => {
         throw (error);
@@ -35,3 +35,4 @@ export const createContact = (data) => {
       }) 
   }
 }
+

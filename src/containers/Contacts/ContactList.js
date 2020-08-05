@@ -1,27 +1,50 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-function ContactList() {
-  return (
-    <div className='text-left'>
-      <h2>Contact List</h2>
+import Contact from '../../components/Contacts/Contact';
 
-      <div className="list-group">
-        <div className="list-group-item list-group-item-action">
-          <div className="d-flex w-100 justify-content-between">
-            <h5 className="mb-1">
-              <Link to={`/contacts/1`}>John</Link>
-            </h5>
-            <small>Contact Id: 1</small>
-          </div>
-          <p className="mb-1">
-            John is from NZ
-          </p>
+class ContactList extends Component {
+
+  render(){
+    console.log(this.props);
+
+    let contacts = null; 
+
+    contacts = this.props.contacts.map((contact, index) => {
+      console.log(contact);
+
+      return (
+       <Contact id={contact.id} 
+            name={contact.name} 
+            email={contact.email} 
+            index={index} key={index}/>
+      )
+    })
+
+    return (
+      <div className='text-left'>
+        <h2>Contact List</h2>
+        <div className="list-group">
+
+          { this.props.contacts && this.props.contacts.length > 0? 
+            contacts
+            :
+            <div className='alert alert-danger'>Contacts Not Found. You can add one!</div> 
+          }
         </div>
+        
       </div>
-      
-    </div>
-  )
+    )
+  }
+  
 }
 
-export default ContactList;
+// converts state to the read-only props
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    contacts: state.contacts
+  }
+} 
+
+export default connect(mapStateToProps)(ContactList);
