@@ -3,23 +3,36 @@ import { connect } from 'react-redux';
 
 import Contact from '../../components/Contacts/Contact';
 
+import { getContacts } from '../../services/contactService';
+
 class ContactList extends Component {
+
+  componentDidMount(){
+    // ideal place for ajax call
+    this.props.dispatch(getContacts());
+  }
 
   render(){
     console.log(this.props);
 
     let contacts = null; 
+    let err  = null;
 
-    contacts = this.props.contacts.map((contact, index) => {
-      console.log(contact);
+    if(this.props.contacts && this.props.contacts.length > 0){
+      contacts = this.props.contacts.map((contact, index) => {
+        console.log(contact);
 
-      return (
-       <Contact id={contact.id} 
-            name={contact.name} 
-            email={contact.email} 
-            index={index} key={index}/>
-      )
-    })
+        return (
+        <Contact id={contact.id} 
+              name={contact.name} 
+              email={contact.email} 
+              index={index} key={index}/>
+        )
+      })
+    }else{
+     err = <div className='alert alert-danger'>Contacts Not Found. You can add one!</div> ;
+    }
+    
 
     return (
       <div className='text-left'>
@@ -29,7 +42,7 @@ class ContactList extends Component {
           { this.props.contacts && this.props.contacts.length > 0? 
             contacts
             :
-            <div className='alert alert-danger'>Contacts Not Found. You can add one!</div> 
+            err
           }
         </div>
         

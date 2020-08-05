@@ -25,7 +25,7 @@ function App() {
           <Route exact path='/' component={Home}></Route>
           <Route path='/about' component={About}></Route>
           <Route exact path='/contacts' component={Contacts}></Route>
-          <Route path='/contacts/1' component={ContactDetails}></Route>
+          <Route path='/contacts/:id' component={ContactDetails}></Route>
         </Switch>
 
         </div>

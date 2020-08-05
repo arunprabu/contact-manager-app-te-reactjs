@@ -11,6 +11,13 @@ What's a Reducer?
 // and make a big object for the store 
 // reducer should mandatorily return a state. 
 
+// the initial data for the entire contacts feature
+// let contactsData = {
+//   contactsList: [],
+//   contact: {
+//   }
+// }
+
 // Step8 : make use of the actions/types.js file. 
 // Have reducers/contactReducer.js to have better switch case statement 
  // with much more scalable code by using the action types 
@@ -23,16 +30,19 @@ const contactReducer = (state = [], action) => {
     //Actions are plain Javascript objects with a type property. 
     //This type property describes the event that is taking place 
     //in the application.
+
+  // todo:  work on retaining the previous state of all contacts
+  
   
   switch(action.type) {  
     case ADD_CONTACT:
       //Step 8.2 - clarification - of the following code, 
       //action.type = Event and action.data = Form Data from Add CONTACT
-      return state.concat([action.payload]);
+      return state.concat([action.contact]);  
     case GET_CONTACTS: 
-      return state; // not implemented yet
+      return action.contacts;  
     case GET_CONTACT_BY_ID: 
-      return state; // not implemented yet
+      return action.contact;
     case EDIT_CONTACT: 
       return state;  // not implemented yet
     case DELETE_CONTACT:

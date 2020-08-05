@@ -1,6 +1,17 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { getContactById } from '../../services/contactService';
 
 class ContactDetails extends Component {
+
+  componentDidMount(){
+    console.log(this.props);
+    console.log('Inside componentDidMount');
+    // read url params -- find id
+    this.props.dispatch(getContactById( this.props.match.params.id  ));
+  }
+
   render() {
     return (
       <div className='container text-left'>
@@ -68,4 +79,4 @@ class ContactDetails extends Component {
   }
 }
 
-export default ContactDetails;
+export default connect()(ContactDetails);
