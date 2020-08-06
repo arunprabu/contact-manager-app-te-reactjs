@@ -81,8 +81,8 @@ Tips
 
 13. Use Why did you update tool
     https://github.com/maicki/why-did-you-update 
-14. shouldComponentUpdate lifecycle hook
-14. Learn more performance tips.. There are aplenty.
+14. shouldComponentUpdate lifecycle hook 
+15. Learn more performance tips.. There are aplenty.
 
 ===
 Debugging in Production

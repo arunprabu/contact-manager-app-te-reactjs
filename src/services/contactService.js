@@ -118,9 +118,9 @@ export const deleteContact = (id) => {
       })
       .catch(error => {
         throw(error);
-      }).
-      finally( () => {
+      })
+      .finally( () => {
         console.log(' It is over');
       })
   };
-};
+}

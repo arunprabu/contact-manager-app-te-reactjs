@@ -29,7 +29,8 @@ function App() {
         </Switch>
 
         </div>
-        <Footer year='2020' />
+        <Footer year='2020'></Footer>
+        
       </div>
     </Router>
   );

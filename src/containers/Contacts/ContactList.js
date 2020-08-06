@@ -22,7 +22,7 @@ class ContactList extends Component {
         console.log(contact);
 
         return (
-        <Contact id={contact.id} 
+          <Contact id={contact.id} 
               name={contact.name} 
               email={contact.email} 
               index={index} key={index}/>

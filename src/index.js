@@ -32,7 +32,7 @@ import { applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 // Step 2: Exec createStore() method and save it in a variable 
-const store = createStore(rootReducers, composeWithDevTools(applyMiddleware( thunk,  logger)));  //this needs a special argument called 'reducer'
+const store = createStore(rootReducers, composeWithDevTools(applyMiddleware(thunk, logger)) );  //this needs a special argument called 'reducer'
 
 // Step 3: Refer reducers/contactReducer.js 
 
