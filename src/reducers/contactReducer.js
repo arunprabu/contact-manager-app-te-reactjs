@@ -44,9 +44,10 @@ const contactReducer = (state = [], action) => {
     case GET_CONTACT_BY_ID: 
       return action.contact;
     case EDIT_CONTACT: 
-      return state;  // not implemented yet
+      return action.contact;
     case DELETE_CONTACT:
-      return state.filter((CONTACT)=>CONTACT.id !== action.id);
+      console.log(action.contact);
+      return action.contact;
     default:
       return state;
   }

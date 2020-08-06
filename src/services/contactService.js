@@ -6,7 +6,7 @@
 // thru what tool? -- HTTPClient -- Axios
 
 import axios from 'axios';
-import { ADD_CONTACT, GET_CONTACTS, GET_CONTACT_BY_ID } from "../actions/types";
+import { ADD_CONTACT, GET_CONTACTS, GET_CONTACT_BY_ID, EDIT_CONTACT, DELETE_CONTACT } from "../actions/types";
 
 const CONTACTS_API_URL = 'https://jsonplaceholder.typicode.com/users';
 
@@ -41,7 +41,6 @@ export const createContact = (data) => {
 export const getContacts = () => {
   // work with axios 
   return (dispatch) => {
-    
     return axios.get(CONTACTS_API_URL )
       .then(response => {
         console.log(response);
@@ -82,5 +81,46 @@ export const getContactById = ( contactId ) => {
 }
 
 // UPDATE CONTACT
+export const updateContact = ( id, contactData ) => {
+  console.log(contactData);
+  // work with axios 
+  return (dispatch) => {
+    return axios.put(`${CONTACTS_API_URL}/${id}`, contactData)
+      .then(response => {
+        console.log(response);
+        dispatch({
+          type: EDIT_CONTACT,
+          contact: response.data
+        })
+      })
+      .catch( (error) => {
+         throw (error);
+      })
+      .finally( () => {
+        console.log('It is over');
+      })
+  }
+}
+
 
 // DELETE CONTACT
+export const deleteContact = (id) => {
+  return (dispatch) => {
+    return axios.delete(CONTACTS_API_URL+'/'+id)
+      .then(response => {
+        console.log(response);
+        //without util method, you can try like the following
+        // this will hit the postReducer
+        dispatch({
+          type: DELETE_CONTACT,
+          contact: response.data
+        })
+      })
+      .catch(error => {
+        throw(error);
+      }).
+      finally( () => {
+        console.log(' It is over');
+      })
+  };
+};

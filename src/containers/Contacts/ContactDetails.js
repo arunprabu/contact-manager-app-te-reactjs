@@ -1,18 +1,39 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getContactById } from '../../services/contactService';
+import { getContactById, updateContact, deleteContact } from '../../services/contactService';
 
 class ContactDetails extends Component {
 
   componentDidMount(){
-    console.log(this.props);
     console.log('Inside componentDidMount');
     // read url params -- find id
-    this.props.dispatch(getContactById( this.props.match.params.id  ));
+    this.props.onGetContact( this.props.match.params.id  );
+  }
+
+  updateContactHandler = (e) => {
+    e.preventDefault();
+    
+    // update flow 
+    const updatableContactData = {
+      name: this.getContactName.value,
+      email: this.getContactEmail.value,
+      phone: this.getContactPhone.value,
+    }
+
+    console.log(updatableContactData);
+
+    // hit the service method with the above data
+    this.props.onUpdateContact(this.props.match.params.id, updatableContactData);
+  }
+
+  deleteHandler = () => {
+    this.props.onDelete(this.props.match.params.id); 
   }
 
   render() {
+    console.log(this.props);
+
     return (
       <div className='container text-left'>
         <h1>Contact Details</h1>
@@ -20,16 +41,16 @@ class ContactDetails extends Component {
           <div className="list-group">
             <div className="list-group-item">
               <div className="d-flex w-100 justify-content-between">
-                <h5 className="mb-1">John</h5>
-                <small>Contact Id: 1</small>
+                <h5 className="mb-1">{this.props.contact.name}</h5>
+                <small>Contact Id: {this.props.contact.id}</small>
               </div>
               <p className="mb-1">
-                John is from NZ
+                E-Mail: {this.props.contact.email }  - Phone: {this.props.contact.phone}
               </p>
               <br />
               <button className='btn btn-primary' data-toggle='modal'
                 data-target='#editModal'>Edit</button> &nbsp;
-              <button className='btn btn-danger'>Delete</button>
+              <button className='btn btn-danger' onClick={this.deleteHandler}>Delete</button>
             </div>
           </div>
         </div>
@@ -54,17 +75,23 @@ class ContactDetails extends Component {
                 </button>
               </div>
               <div className="modal-body">
-                <form>
+                <form onSubmit={this.updateContactHandler}>
                   <input required type="text"
-                    placeholder="Enter Name"
+                    placeholder="Enter Name" 
+                    defaultValue={this.props.contact.name}
+                    ref={(input) => this.getContactName = input} 
                     className='form-control'
                   /><br />
                   <input required type="text"
                     placeholder="Enter E-Mail"
+                    defaultValue={this.props.contact.email}
+                    ref={(input) => this.getContactEmail = input} 
                     className='form-control'
                   /><br />
                   <input required type="text"
                     placeholder="Enter Phone"
+                    defaultValue={this.props.contact.phone}
+                    ref={(input) => this.getContactPhone = input}
                     className='form-control'
                   /><br />
                   <button className='btn btn-primary'
@@ -79,4 +106,24 @@ class ContactDetails extends Component {
   }
 }
 
-export default connect()(ContactDetails);
+
+// we can create custom event handlers -- they will be available in props
+const mapDispatchToProps = (dispatch) => {
+  console.log(dispatch);
+  return {
+    onGetContact: (id) => dispatch(getContactById(id)),
+    onUpdateContact: (id, contactData) => {
+      dispatch(updateContact(id, contactData));
+    },
+    onDelete: (id) => dispatch(deleteContact(id))
+  };
+};
+
+// converts state to the read-only props
+const mapStateToProps = (state) => {
+  return {
+    contact: state.contacts
+  }
+} 
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactDetails);

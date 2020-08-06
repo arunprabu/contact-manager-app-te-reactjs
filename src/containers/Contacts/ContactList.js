@@ -13,7 +13,6 @@ class ContactList extends Component {
   }
 
   render(){
-    console.log(this.props);
 
     let contacts = null; 
     let err  = null;
@@ -54,7 +53,6 @@ class ContactList extends Component {
 
 // converts state to the read-only props
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     contacts: state.contacts
   }

@@ -23,8 +23,6 @@ class ContactForm extends Component {
       phone: this.getPhone.value
     }
 
-    console.log(contactFormData);
-
     console.log(this.props);  // Step 11: props exists because of connect method
     // Step 13: dispatch method will be in the above props 
     this.props.dispatch(createContact( contactFormData )); // this is the service method

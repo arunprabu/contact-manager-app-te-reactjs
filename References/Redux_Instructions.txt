@@ -405,7 +405,7 @@ export const getContacts = () => {
         console.log(response);
         dispatch({
           type: GET_CONTACTS,
-          payload: response.data
+          contact: response.data
         })
       })
       .catch( (error) => {
@@ -431,8 +431,268 @@ case GET_CONTACTS:
   Read operation is also over. (GET method)
 ===
 
-Step 21: 
----
-  
+Step 21:
+-------
+  Let's work on another GET
+  getContactById 
+
+  in contactService.js 
+
+    //Initial Load to get post by id
+    export const getContactById = (contactId) => {
+      return (dispatch) => {
+        return axios.get(POSTS_API_URL+'/'+contactId)
+          .then(response => {
+            //without util method, you can try like the following
+            // this will hit the postReducer
+            dispatch({
+              type: GET_CONTACT_BY_ID,
+              post: response.data
+            })
+          })
+          .catch(error => {
+            throw(error);
+          });
+      };
+    };
+
+===
+Step 22: 
+  In PostDetails.js, in its life cycle hook 
+
+  componentDidMount(){
+    // Step 22.1 read url parameter in react -- it is available in props
+    console.log(this.props.match.params.id);
+    // Step 22.2 passing the url param to getPostById() method
+    this.props.dispatch(getPostById(this.props.match.params.id)); 
+  }
+
+====
+Step 23: 
+  And in postReducer.js 
+  inside switch case... make a correction like the following
+
+  case GET_POST_BY_ID: 
+      return action.post; 
+
+Step 24: 
+  Then, to get the data as props in PostDetails.js,
+  import { connect } from 'react-redux';
+
+  And also have the following code
+
+  const mapStateToProps = (state) => {
+    // it is from state.posts 
+    // not from state.post because of the way it is mentioned in combined reducer
+    return {
+        post: state.posts 
+    }
+  }
+
+  export default connect(mapStateToProps)(PostDetails);
+
+=====
+Step 25: 
+  Inside render() method of PostDetails.js,
+    render() {
+      console.log(this.props);
+      return (
+        <div className='container'>
+          <h1>Post Details</h1>
+          <div className="list-group">
+            <div className="list-group-item">
+              <div className="d-flex w-100 justify-content-between">
+                <h5 className="mb-1">{this.props.post.title}</h5>
+                <small>Post Id: {this.props.post.id}</small>
+              </div>
+              <p className="mb-1">
+                {this.props.post.body}
+              </p>
+              <small>UserId: {this.props.post.userId}</small>
+              <br />
+              <button className='btn btn-primary' >Edit</button> &nbsp;
+              <button className='btn btn-danger'>Delete</button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+Step 26: 
+  Check the app! Get Post details will also work fine. 
+  So another GET is over. 
+  We can work on Update / Delete Post  
+
+Step 27: 
+  Now, Let's work on delete. We'll work on update later.
+  In PostDetails.js,
+
+  // Step 27.1
+  import { getPostById, deletePost } from '../../services/postService';
+
+  // Step 27.2
+  deleteHandler = () => {
+    this.props.dispatch(deletePost(this.props.post.id));
+  }
+
+  // Step 27.3
+  <button className='btn btn-danger' onClick={this.deleteHandler}>Delete</button>
+
+Step 28: 
+  Then, work on postService.js
+
+  add a new method there..
+
+    //Delete Post by postId
+    export const deletePost = (postId) => {
+      return (dispatch) => {
+        return axios.delete(POSTS_API_URL+'/'+postId)
+          .then(response => {
+            //without util method, you can try like the following
+            // this will hit the postReducer
+            dispatch({
+              type: DELETE_POST,
+              post: response.data
+            })
+          })
+          .catch(error => {
+            throw(error);
+          });
+      };
+    };
+
+Step 29: 
+  In switch case of postReducer.js 
+
+    case DELETE_POST:
+      return action.post;
+
+  That's it.. Check the app! delete will also work. 
+  The data from the backend is wrong.. 
+  because of it our app doesn't work well for delete action. 
+
+  we have filter the items from postReducer's switch case... 
+
+===
+Step 30: 
+  We have to work on update operation. 
+
+  In PostDetails.js,
+  have the edit button to open bootstrap modal
+    <button className='btn btn-primary' 
+    data-toggle='modal' 
+    data-target='#editModal'>Edit</button> &nbsp;
+
+  And have the modal code,
+  <div className="modal fade" id="editModal"
+      tabIndex={-1}
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title" id="exampleModalLabel">
+              Update Post
+            </h5>
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <form onSubmit={this.handleSubmit}>
+              <input required type="text"
+                placeholder="Enter Post Title"
+                className='form-control' 
+                defaultValue={this.props.post.title} 
+                ref={(input) => this.getTitle = input} /><br />
+              <textarea required rows="5" cols="28"
+                placeholder="Enter Post" 
+                className='form-control'
+                defaultValue={this.props.post.body} 
+                ref={(input) => this.getContent = input} /><br />
+              <button className='btn btn-primary' type='submit'>Save Changes</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+Step 31: 
+  Define handleSubmit function there and capture the form data,
+  then dispatch ac action to editPost 
+    handleSubmit = (e) => {
+      e.preventDefault();
+      const title = this.getTitle.value;
+      const body = this.getContent.value;
+      const data = {
+        id: this.props.post.id,
+        title,
+        body
+      }
+      console.log(data);
+      
+      this.props.dispatch(editPost( data ));
+      this.getTitle.value = '';
+      this.getContent.value = '';
+    }
+
+Step 32: 
+  For the above to work, define editPost method in postService.js
+    //Update post
+    export const editPost = (data) => {
+      return (dispatch) => {
+        return axios.put(POSTS_API_URL+'/'+data.id, data )
+          .then(response => {
+            dispatch({
+              type: EDIT_POST,
+              post: response.data
+            })
+          })
+          .catch(error => {
+              throw (error);
+          });
+      };
+    };
+
+Step 33: Finally, work with the switch case in postReducer.js 
+  case EDIT_POST: 
+      return action.post;
+
+That's all. CRUD Operation is over!
+
+Note: Add Toastr (react-redux-toastr )
+
+Other Important Notes:
+1) How to Include Bootstrap in React App?
+    npm i bootstrap --save 
+    then,
+    in index.js 
+    import 'bootstrap/dist/css/bootstrap.css'
+
+2) Debugging (Writing debuggable code)
+  Use redux dev tools extension
+  Read the doc and config the app to use the extension.
+  you can configure it for production also.
+
+3) Working with action creators
+  // we can create custom event handlers -- they will be available in props
+  const mapDispatchToProps = dispatch => {
+    return {
+      onDelete: id => {
+        dispatch(deletePost(id));
+      }
+    };
+  };
+
+  export default connect(mapStateToProps, mapDispatchToProps)(PostList);
+
+4) Webpack and it's config 
+  npm run eject
 
 
